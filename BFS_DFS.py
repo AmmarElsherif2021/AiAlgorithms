@@ -41,15 +41,21 @@ class Graph(object):
             for j in range(self.size):
                 if visited_nodes[i][j]==1:
                     visited_nodes[i][j]=0
-        
-        
+      
         q=[(0)]
-        
-        
-        
+     
         print(visited_nodes)
         
-        
+    def bfs_func(self):
+        visited_nodes=(self.adjMatrix)
+        for i in range(self.size):
+            for j in range(self.size):
+                if visited_nodes[i][j]==1:
+                    visited_nodes[i][j]=0
+      
+        q=[(0)]
+     
+        print(visited_nodes)  
         
         
             
