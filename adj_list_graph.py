@@ -45,6 +45,7 @@ class Graph:
         else:
             print(s , ' is connected to ',d)
     
+    
     #function to insert adjacencies:
     def insertAdj(self):
         for node in self.N:
@@ -112,6 +113,23 @@ class Graph:
         print(int(visited[-1]==x)*('congrats it worked\n'))
         print(int(visited[-1]!=x)*('Sorry !! \n'))
         print(visited)
+
+    #weighted Graph
+    def addWeight(self):
+        nodes=self.N
+        w_nodes=list
+        for node in nodes:
+            w_node={
+                'node':node,
+                'cost':0,
+                'heu':0
+                }
+            print('For '+ node +' \n')
+            w_node['cost']=input('INPUT COST: ')
+            w_node['heu']=input('INPUT HEU: ')
+            w_nodes.append(w_node)
+        print(w_nodes,'\n')
+        return w_nodes
 #  Directional Graph ---> Note: state space could be presented using DiGraph
 
 class DiGraph:
@@ -230,4 +248,5 @@ dirgraph.print_graph()
 #dirgraph.BFS('F')
 #dirgraph.DFS('F')
 #graph.BFS('G')
-graph.DFS('G')
+#graph.DFS('G')
+graph.addWeight()
