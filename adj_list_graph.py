@@ -117,7 +117,7 @@ class Graph:
     #weighted Graph
     def addWeight(self):
         nodes=self.N
-        w_nodes=list
+        w_nodes=list()
         for node in nodes:
             w_node={
                 'node':node,
