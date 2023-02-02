@@ -57,7 +57,7 @@ class Graph:
                     break
 
   
-#Directional Graph
+#Directional Graph ---> Note: state space could be presented using DiGraph
 
 class DiGraph:
     
@@ -104,11 +104,12 @@ class DiGraph:
                     self.addEdge(node,adj)
                 else:
                     break
-                
+    
+    #BFS search value x in graph
     def BFS(self,x):
         q=['S']
         visited=['.']
-        path=tuple()
+        
         while q and visited[0]!=x:
             for node in self.graph:
                 if q[0] in visited:
@@ -128,15 +129,47 @@ class DiGraph:
         print(int(visited[-1]!=x)*('Sorry !! \n'))
         print(visited)
     
-#-implementation of undir-graph----------------------------------------------------------------      
+    #DFS search value x in graph
+    def DFS(self,x):
+        stack=['S']
+        visited=['.']
+        opened=''
+       
+        while stack and visited[0]!=x :
+            if stack[-1] in visited:
+                del stack[-1]
+                
+            else:
+                opened=stack[-1]
+                del stack[-1]
+                if self.graph[opened]:
+                    stack.append(self.graph[opened][0])
+                    
+                print(stack)
+                visited.append(opened)
+                
+
+        print('\n')            
+        print(int(visited[-1]==x)*('congrats it worked\n'))
+        print(int(visited[-1]!=x)*('Sorry !! \n'))
+        print(visited)
+    
+#-----------------------------------------------------------------------
+      
+    
+#-create undir-graph----------------------------------------------------------------      
 Nodes=['S','A','B','C','D','E','F']
 #graph =Graph(Nodes)
 #graph.insertAdj()
 #graph.print_graph()
 
-#-implementation of dir-graph
+#-create dir-graph
 
 dirgraph =DiGraph(Nodes)
 dirgraph.insertAdj()
 dirgraph.print_graph()
-dirgraph.BFS('F')
+
+#-Excute search methods:
+    
+#dirgraph.BFS('F')
+dirgraph.DFS('F')
