@@ -26,14 +26,14 @@ class Graph:
     
    
     
-   # function to print graph
+    # function to print graph
     def print_graph(self):
         for node in self.N:
             print(node,' -->',self.graph[node])
     
    
     
-   # function to make edges between nodes
+    # function to make edges between nodes
     def addEdge(self,s,d):
         if d not in self.graph[s]:
             self.graph[s].append(d)
@@ -49,19 +49,74 @@ class Graph:
     def insertAdj(self):
         for node in self.N:
             for i in range(len(self.N)):
-                print('Now you inserts the node ',node, ' adjacency: >> >>')
+                print('Now you inserts the node << ',node, ' >> adjacency: >> ')
                 adj=input('Enter adjacency  >')
                 if adj in self.N:
                     self.addEdge(node,adj)
                 else:
                     break
-
-  
-#Directional Graph ---> Note: state space could be presented using DiGraph
+    
+    # BFS search value x in graph
+    def BFS(self,x):
+        q=['S']
+        visited=['.']
+        opened=''
+        while q and visited[0]!=x:
+            if q[0] in visited:
+                q.pop(0)
+                print(q)
+                
+            else:
+                opened=q[0]
+                if self.graph[opened]:
+                    q.extend(self.graph[opened])
+                    
+                visited.append(opened)
+                q.pop(0)
+                print(q)
+                
+        
+            
+                
+        print('\n')            
+        print(int(visited[-1]==x)*('congrats it worked\n'))
+        print(int(visited[-1]!=x)*('Sorry !! \n'))
+        print(visited)
+    
+    # DFS search value x in graph
+    def DFS(self,x):
+        stack=['S']
+        visited=['.']
+        opened=''
+       
+        while stack and visited[0]!=x :
+            if stack[-1] in visited:
+                stack.pop(-1)
+                print(stack)
+                
+            else:
+                opened=stack[-1]
+                stack.pop(-1)
+                
+                if self.graph[opened]:
+                    for newNode in (self.graph[opened]):
+                        if newNode not in visited:
+                            stack.append(newNode)
+                            break
+                    
+                    
+                print(stack)
+                visited.append(opened)
+        
+        print('\n')            
+        print(int(visited[-1]==x)*('congrats it worked\n'))
+        print(int(visited[-1]!=x)*('Sorry !! \n'))
+        print(visited)
+#  Directional Graph ---> Note: state space could be presented using DiGraph
 
 class DiGraph:
     
-    #constructor
+    # constructor
     def __init__ (self,nodes):
         
         # num of nodes
@@ -75,26 +130,23 @@ class DiGraph:
             self.graph[node]
     
    
-    
-   # function to print graph
+    # function to print graph
     def print_graph(self):
         
         for node in self.N:
           
             print(node,' -->',self.graph[node])
     
-   
-    
-   # function to make edges between nodes
+
+    # function to make edges between nodes
     def addEdge(self,s,d):
         if d not in self.graph[s]:
             self.graph[s].append(d)
         else:
             print(d , ' is connected to ',s)
         
-       
-    
-    #function to insert adjacencies:
+
+    # function to insert adjacencies:
     def insertAdj(self):
         for node in self.N:
             for i in range(len(self.N)):
@@ -105,7 +157,8 @@ class DiGraph:
                 else:
                     break
     
-    #BFS search value x in graph
+    
+    # BFS search value x in graph
     def BFS(self,x):
         q=['S']
         visited=['.']
@@ -129,7 +182,7 @@ class DiGraph:
         print(int(visited[-1]!=x)*('Sorry !! \n'))
         print(visited)
     
-    #DFS search value x in graph
+    # DFS search value x in graph
     def DFS(self,x):
         stack=['S']
         visited=['.']
@@ -151,25 +204,30 @@ class DiGraph:
 
         print('\n')            
         print(int(visited[-1]==x)*('congrats it worked\n'))
-        print(int(visited[-1]!=x)*('Sorry !! \n'))
+        print(int(visited[-1]!=x)*('Ooops Blocked!! \n'))
         print(visited)
     
 #-----------------------------------------------------------------------
       
     
 #-create undir-graph----------------------------------------------------------------      
-Nodes=['S','A','B','C','D','E','F']
-#graph =Graph(Nodes)
-#graph.insertAdj()
-#graph.print_graph()
+Nodes=['S','A','B','C','D','E','F','G']
+graph =Graph(Nodes)
+graph.insertAdj()
+graph.print_graph()
 
 #-create dir-graph
 
+"""
 dirgraph =DiGraph(Nodes)
 dirgraph.insertAdj()
 dirgraph.print_graph()
 
+"""
+
 #-Excute search methods:
     
 #dirgraph.BFS('F')
-dirgraph.DFS('F')
+#dirgraph.DFS('F')
+#graph.BFS('G')
+graph.DFS('G')
