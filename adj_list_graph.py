@@ -78,7 +78,9 @@ class DiGraph:
     
    # function to print graph
     def print_graph(self):
+        
         for node in self.N:
+          
             print(node,' -->',self.graph[node])
     
    
@@ -97,13 +99,37 @@ class DiGraph:
         for node in self.N:
             for i in range(len(self.N)):
                 print('Now you inserts the node ',node, ' adjacency: >> >>')
-                adj=input('Enter adjacency  >')
+                adj=input('Enter adjacency  > ')
                 if adj in self.N:
                     self.addEdge(node,adj)
                 else:
                     break
+                
+    def BFS(self,x):
+        q=['S']
+        visited=['.']
+        path=tuple()
+        while q and visited[0]!=x:
+            for node in self.graph:
+                if q[0] in visited:
+                    del q[0]
+                    
+                else:
+                    for adj in self.graph[node]:
+                        q.append(adj)
+                        print(q)
+                    visited.append(q[0])
+                    del q[0]
+        
+            
+                
+        print('\n')            
+        print(int(visited[-1]==x)*('congrats it worked\n'))
+        print(int(visited[-1]!=x)*('Sorry !! \n'))
+        print(visited)
+    
 #-implementation of undir-graph----------------------------------------------------------------      
-Nodes=['A','B','C','D','E']
+Nodes=['S','A','B','C','D','E','F']
 #graph =Graph(Nodes)
 #graph.insertAdj()
 #graph.print_graph()
@@ -113,3 +139,4 @@ Nodes=['A','B','C','D','E']
 dirgraph =DiGraph(Nodes)
 dirgraph.insertAdj()
 dirgraph.print_graph()
+dirgraph.BFS('F')
