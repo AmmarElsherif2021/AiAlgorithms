@@ -57,6 +57,22 @@ class Graph:
                 else:
                     break
     
+    #weighted Graph
+    def addWeight(self):
+        nodes=self.N
+        w_nodes=list()
+        for node in nodes:
+            w_node={
+                'node':node,
+                'cost':0,
+                'heu':0
+                }
+            print('For '+ node +' \n')
+            w_node['cost']=input('INPUT COST: ')
+            w_node['heu']=input('INPUT HEU: ')
+            w_nodes.append(w_node)
+        print(w_nodes,'\n')
+        return w_nodes
     # BFS search value x in graph
     def BFS(self,x):
         q=['S']
@@ -75,9 +91,6 @@ class Graph:
                 visited.append(opened)
                 q.pop(0)
                 print(q)
-                
-        
-            
                 
         print('\n')            
         print(int(visited[-1]==x)*('congrats it worked\n'))
@@ -114,22 +127,40 @@ class Graph:
         print(int(visited[-1]!=x)*('Sorry !! \n'))
         print(visited)
 
-    #weighted Graph
-    def addWeight(self):
-        nodes=self.N
-        w_nodes=list()
-        for node in nodes:
-            w_node={
-                'node':node,
-                'cost':0,
-                'heu':0
-                }
-            print('For '+ node +' \n')
-            w_node['cost']=input('INPUT COST: ')
-            w_node['heu']=input('INPUT HEU: ')
-            w_nodes.append(w_node)
-        print(w_nodes,'\n')
-        return w_nodes
+    
+
+    # Greedy search for element x in graph
+    def Greedy(self,x):
+        q=['S']
+        visited=['.']
+        opened='' #--> expanded node var
+        w_nodes=self.addWeight() # --> weighted graph
+        step_weights=list()    # --> weights of the q nodes in every step
+        min_idx=0
+        while q and visited[0]!=x:
+            for node in q:
+                step_weights.append(w_nodes[node]['heu'])
+            min_idx=step_weights.index(min(step_weights))
+            if q[min_idx] in visited:
+                q.pop(min_idx)
+                print(q)
+                
+            else:
+                opened=q[min_idx]
+                if self.graph[opened]:
+                    q.extend(self.graph[opened])
+                    
+                visited.append(opened)
+                q.pop(min_idx)
+                print(q)
+                
+        
+            
+                
+        print('\n')            
+        print(int(visited[-1]==x)*('congrats it worked\n'))
+        print(int(visited[-1]!=x)*('Sorry !! \n'))
+        print(visited)
 #  Directional Graph ---> Note: state space could be presented using DiGraph
 
 class DiGraph:
@@ -249,4 +280,5 @@ dirgraph.print_graph()
 #dirgraph.DFS('F')
 #graph.BFS('G')
 #graph.DFS('G')
-graph.addWeight()
+#graph.addWeight()
+graph.Greedy('G')
