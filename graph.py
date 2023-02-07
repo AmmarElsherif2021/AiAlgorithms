@@ -4,9 +4,7 @@ Created on Wed Feb  1 16:21:01 2023
 
 @author: ammar
 """
-#A* search Algorithm
-#Greedy search Algorithm
-#Hill Climbing Algorithm
+
 from collections import defaultdict
 from typing import Union
 # 0- Node class
@@ -30,17 +28,7 @@ class Node:
     def getNode(self):
         return (self.name,self.cost,self.heu,self.adj)
     
-#-create undir-graph----------------------------------------------------------------      
-nodes=[['S',1,1],['A',10,10],['B',7,7],['C',6,6],['D',5,5],['E',3,3],['F',2,2],['G',1,0]]
-#nodesNames=['S','A','B','C','D','E','F','G']
-nodeslist=[] #graph input
-for node in nodes:
-    name=node[0]
-    cost=node[1]
-    heu=node[2]
-    newNode=Node(name,cost,heu)
-    nodeslist.append(newNode.getNode())  
-#print(nodeslist)
+
 
 
 # Represent an undirected graph  >>>>
@@ -69,13 +57,17 @@ class Graph:
         for node in self.graph:
             print(node.getNode())
     
+    # function to return list of actual nodes:
+    def getNodes(self):
+        return self.graph
+    
     # function to return nodes names of graph:
     def getNodesNames(self):
         li=list()
         for node in self.N:
             li.append(node[0])
-        
         return  li
+    
     #function to search a node 
     def searchNode(self,x):
         for node in self.graph:
@@ -113,7 +105,26 @@ class Graph:
                     self.addGraphNodeEdge(node,adjNode)
                 else:
                     print('\n C MONNNN the node '+adj+' not in the graph [*__*] \n you need to Restart !!')
-        
+#Test : -----------------------------------       
+#-create undir-graph----------------------------------------------------------------      
+'''
+nodes=[['S',1,1],['A',10,10],['B',7,7],['C',6,6],['D',5,5],['E',3,3],['F',2,2],['G',1,0]]
+#nodesNames=['S','A','B','C','D','E','F','G']
+nodeslist=[] #graph input
+for node in nodes:
+    name=node[0]
+    cost=node[1]
+    heu=node[2]
+    newNode=Node(name,cost,heu)
+    nodeslist.append(node)
+    actualNode=Node(name,cost,heu)
+    
+    print(actualNode.getNodeEdges())
+#print(nodeslist)
 graph =Graph(nodeslist)
+
+
 graph.insertAdjs()
 graph.print_graph() 
+
+'''
