@@ -10,14 +10,14 @@ from typing import Union
 # 0- Node class
 class Node:
     
-    def __init__(self,name='',cost=0,heu=0):
+    def __init__(self,name='',heu=0):
         self.name=name
         self.adj=list()
-        self.cost=cost
+        
         self.heu=heu
     
     def print_node(self):
-        print((self.name,self.cost,self.heu))
+        print((self.name,self.heu))
         
     def setNodeEdge(self,x):
         self.adj.append(x.getNode()[0])
@@ -26,7 +26,7 @@ class Node:
         return self.adj
     
     def getNode(self):
-        return (self.name,self.cost,self.heu,self.adj)
+        return (self.name,self.heu,self.adj)
     
 
 
@@ -47,7 +47,7 @@ class Graph:
         
         # Fill the graph list
         for node in self.N :
-            newNode=Node(node[0],node[1],node[2])
+            newNode=Node(node[0],node[1])
             self.graph[newNode]
     
         

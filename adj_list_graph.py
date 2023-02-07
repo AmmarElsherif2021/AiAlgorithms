@@ -41,7 +41,7 @@ def BFS(graph,x):
             
     print('\n')            
     print(int(visited[-1]==x)*('congrats it worked\n'))
-    print(int(visited[-1]!=x)*('Sorry !! \n'))
+    print(int(visited[-1]!=x)*('OooPS Missed it !! !! \n'))
     print(visited) 
  
 # DFS search value x in graph
@@ -51,10 +51,10 @@ def DFS(graph,x):
     visited=['.']
     opened=''
    
-    while stack and visited[0]!=x :
+    while stack and visited[-1]!=x :
         if stack[-1] in visited:
             stack.pop(-1)
-            print(stack)
+            print('STACK --> ',stack)
             
         else:
             opened=stack[-1]
@@ -63,56 +63,78 @@ def DFS(graph,x):
             
             if opened in graph.getNodesNames():
                 openedNode=graph.searchNode(opened)
-                stack.extend(openedNode.getNodeEdges())
+                li=openedNode.getNodeEdges()
+                for node in list(reversed(li)):
+                    if node not in visited:
+                        stack.append(node)
+                    
+                
                 visited.append(opened)    
                 
                
-            print(stack)
+            print('STACK ----> ',stack)
             
     
     print('\n')            
     print(int(visited[-1]==x)*('congrats it worked\n'))
-    print(int(visited[-1]!=x)*('Sorry !! \n'))
+    print(int(visited[-1]!=x)*('OooPS Missed it !! !! \n'))
     print(visited) 
 
  
 
 # Greedy search for element x in graph
-def Greedy(self,x):
-    q=['S']
+def Greedy(graph,x):
+    stack=['S']
     visited=['.']
-    opened='' #--> expanded node var
-    w_nodes=self.insertAdj() # --> weighted graph
-    step_weights=list()    # --> weights of the q nodes in every step
-    min_idx=int()
+    opened=''
+   
+    # A function to sort list of nodes names based on their heu
+    def descendentHue(li):
+        nodesHueList=list()
+        returnlist=list()
+        heu=int()
+        for node in li:
+            heu=graph.searchNode(node).getNode()[1]
+            nodesHueList.append([node,heu])
+        nodesHueList.sort(key=lambda x: x[1])
+        for node in nodesHueList:
+            returnlist.append(node[0])
+        return returnlist
+
     
-    
-    if q and visited[0]!=x:
-        # for node in q:
-        #     step_weights.append(w_nodes[q.index(node)]['heu'])
-        step_weights = [node.heu for node in w_nodes if node.node in q]
-        print(step_weights)
-        # min_idx=step_weights.index(min(step_weights))
-        # if q[min_idx] in visited:
-        #     q.pop(min_idx)
-        #     print(q)
+    while stack and visited[-1]!=x :
+        if stack[-1] in visited:
+            stack.pop(-1)
+            print('STACK --> ',stack)
             
-        # else:
-        #     opened=q[min_idx]
-        #     if self.graph[opened]:
-        #         q.extend(self.graph[opened])
-                
-        #     visited.append(opened)
-        #     q.pop(min_idx)
-        #     print(q) 
+        else:
+            opened=stack[-1]
+            openedNode=Node()
+            stack.pop(-1)
+            
+            if opened in graph.getNodesNames():
+                openedNode=graph.searchNode(opened)
+                edgelist=openedNode.getNodeEdges()
+                huelist=descendentHue(edgelist)
+                # li.sort(reverse=True)
+                for node in huelist:
+                    if node not in visited:
+                        stack.append(node)
+                visited.append(opened)    
+                print('VISITED ==>',visited)
+               
+            print('STACK ----> ',stack)
+            
+    
+    print('\n')            
+    print(int(visited[-1]==x)*('congrats it worked\n'))
+    print(int(visited[-1]!=x)*('OooPS Missed it !! \n'))
+    print('visited --->> ',visited) 
              
      
          
              
-        print('\n')            
-        print(int(visited[-1]==x)*('congrats it worked\n'))
-        print(int(visited[-1]!=x)*('Sorry !! \n'))
-        print(visited)
+        
 
 # Represent an undirected graph  >>>>
 
@@ -218,14 +240,13 @@ class DiGraph:
 #-----------------------------------------------------------------------
       
 #-create undir-graph----------------------------------------------------------------      
-nodes=[['S',1,1],['A',10,10],['B',7,7],['C',6,6],['D',5,5],['E',3,3],['F',2,2],['G',1,0]]
+nodes=[['S',1],['A',5],['B',7],['C',6],['D',5],['E',3],['F',2],['G',0]]
 #nodesNames=['S','A','B','C','D','E','F','G']
 nodeslist=[] #graph input
 for node in nodes:
     name=node[0]
-    cost=node[1]
-    heu=node[2]
-    newNode=Node(name,cost,heu)
+    hue=node[1]
+    newNode=Node(name,hue)
     nodeslist.append(node)  
 print(nodeslist)    
 
@@ -235,5 +256,5 @@ graph.insertAdjs()
 
 BFS(graph,'G')
 DFS(graph,'G')
-#graph.addWeight()
-#graph.Greedy('G')
+
+Greedy(graph,'G')
