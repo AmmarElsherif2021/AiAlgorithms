@@ -31,7 +31,10 @@ def BFS(graph,x):
             openedNode=Node()
             if opened in graph.getNodesNames():
                 openedNode=graph.searchNode(opened)
-                q.extend(openedNode.getNodeEdges())
+                
+                for node in openedNode.getNodeEdges():
+                    if node not in visited:
+                        q.append(node)
                 print('extended---',openedNode.getNodeEdges())
                 visited.append(opened)
                 print('visited --> ',visited)
@@ -130,113 +133,76 @@ def Greedy(graph,x):
     print(int(visited[-1]==x)*('congrats it worked\n'))
     print(int(visited[-1]!=x)*('OooPS Missed it !! \n'))
     print('visited --->> ',visited) 
-             
-     
-         
-             
-        
 
-# Represent an undirected graph  >>>>
+#Uniform cost Algorithm | Dijkstra’s single-source-shortest-path algorithm: 
+def UCS(graph,x):
+    q=['S']
+    visited=['.']
+    opened=''
+    openedNode=Node()
+    sortedCostList=list()
+    
+    #------------------------------------
+    def ascendentCost(li):
+        
+        nodesCostList=list()
+        returnlist=list()
+        for node in li:
+            nodesCostList.append(graph.searchNode(node).getNodeCostedEdges())
 
-"""
-class DiGraph:
+        nodesCostList.sort(key=lambda x: x[1])
+        for node in nodesCostList:
+            returnlist.append(node[0])
+        return returnlist
     
-    # constructor
-    def __init__ (self,nodes):
-        
-        # num of nodes
-        self.N=nodes
-        
-        # Empty container for nodes >> a list for adjecency lists
-        self.graph=defaultdict(list)
-        
-        # Fill the graph list
-        for node in self.N :
-            self.graph[node]
+    #-------------------------------------
     
-   
-    # function to print graph
-    def print_graph(self):
-        
-        for node in self.N:
-          
-            print(node,' -->',self.graph[node])
-    
-
-    # function to make edges between nodes
-    def addEdge(self,s,d):
-        if d not in self.graph[s]:
-            self.graph[s].append(d)
-        else:
-            print(d , ' is connected to ',s)
-        
-
-    # function to insert adjacencies:
-    def insertAdj(self):
-        
-        for node in self.N:
-            for i in range(len(self.N)):
-                print('Now you inserts the node ',node, ' adjacency: >> >>')
-                adj=input('Enter adjacency  > ')
-                if adj in self.N:
-                    self.addEdge(node,adj)
-                else:
-                    break
-                """
-        
-               
-                        
-'''
-    
-    # BFS search value x in graph
-    def BFS(self,x):
-        q=['S']
-        visited=['.']
-        
-        while q and visited[0]!=x:
-            for node in self.graph:
-                if q[0] in visited:
-                    del q[0]
-                    
-                else:
-                    for adj in self.graph[node]:
-                        q.append(adj)
-                        print(q)
-                    visited.append(q[0])
-                    del q[0]
-        
+    for node in graph.getNodes():
+        print(node.getNodeEdges())
+    while q and visited[0]!=x:
+        if q[0] in visited:
+            q.pop(0)
+            print(q)
             
+        else:
+            opened=q[0]
+            print('opened-->',opened)
+            
+            openedNode=Node()
+            if opened in graph.getNodesNames():
+                openedNode=graph.searchNode(opened)
                 
-        print('\n')            
-        print(int(visited[-1]==x)*('congrats it worked\n'))
-        print(int(visited[-1]!=x)*('Sorry !! \n'))
-        print(visited)
-    
-    # DFS search value x in graph
-    def DFS(self,x):
-        stack=['S']
-        visited=['.']
-        opened=''
-       
-        while stack and visited[0]!=x :
-            if stack[-1] in visited:
-                del stack[-1]
+                for node in openedNode.getNodeEdges():
+                    if node[0] not in visited:
+                        q.append(node[0])
                 
-            else:
-                opened=stack[-1]
-                del stack[-1]
-                if self.graph[opened]:
-                    stack.append(self.graph[opened][0])
-                    
-                print(stack)
+                
+                
+                print('extended---',openedNode.getNodeEdges())
                 visited.append(opened)
-                
+                print('visited --> ',visited)
+                q.pop(0)
+                #Arrange queue based on costs
+            q=ascendentCost(q)    
+            print(q)
+            
+    print('\n')            
+    print(int(visited[-1]==x)*('congrats it worked\n'))
+    print(int(visited[-1]!=x)*('OooPS Missed it !! !! \n'))
+    print(visited)
+             
+#A* search Algorithm         
+def A_star(graph,x):
+    pass
 
-        print('\n')            
-        print(int(visited[-1]==x)*('congrats it worked\n'))
-        print(int(visited[-1]!=x)*('Ooops Blocked!! \n'))
-        print(visited)
-    '''
+#Hill climbing search Algorithm
+def hill_climbing(graph,x):
+    pass
+        
+
+
+
+
 #-----------------------------------------------------------------------
       
 #-create undir-graph----------------------------------------------------------------      
@@ -252,9 +218,15 @@ print(nodeslist)
 
 graph=Graph(nodeslist)
 graph.insertAdjs()
+
+# test graph edges existance:
+'''
+for node in graph.getNodes():
+    print(node.getNode(),'---->',node.getNodeCostedEdges())
+'''
 #-Excute search methods:
 
-BFS(graph,'G')
-DFS(graph,'G')
-
-Greedy(graph,'G')
+#BFS(graph,'G')
+#DFS(graph,'G')
+#Greedy(graph,'G')
+UCS(graph, 'G')
