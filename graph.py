@@ -118,4 +118,15 @@ class Graph:
                     self.addGraphNodeEdge(node,adjNode,costList[i])
                 else:
                     print('\n C MONNNN the node '+adjList[i]+' not in the graph [*__*] \n you need to Restart !!')
+        #--------------------------------------------------------
+    
+    def getCost(self,a,b):
+        A=self.searchNode(a).getNode()
+        for node in A[2]:
+            if node[0]==b:
+                return int(node[1])
+        
+        
+        
+
 #Test : -----------------------------------       

@@ -19,7 +19,7 @@ def BFS(graph,x):
     
     for node in graph.getNodes():
         print(node.getNodeEdges())
-    while q and visited[0]!=x:
+    while q and visited[-1]!=x:
         if q[0] in visited:
             q.pop(0)
             print(q)
@@ -136,45 +136,38 @@ def Greedy(graph,x):
 
 #Uniform cost Algorithm | Dijkstra’s single-source-shortest-path algorithm: 
 def UCS(graph,x):
-    q=['S']
+    q=[['S',0]]
     visited=['.']
     opened=''
     openedNode=Node()
     sortedCostList=list()
     
     #------------------------------------
-    def ascendentCost(li):
-        
-        nodesCostList=list()
-        returnlist=list()
-        for node in li:
-            nodesCostList.append(graph.searchNode(node).getNodeCostedEdges())
-
+    def ascendentCost(nodesCostList):
         nodesCostList.sort(key=lambda x: x[1])
-        for node in nodesCostList:
-            returnlist.append(node[0])
-        return returnlist
+        return nodesCostList
     
     #-------------------------------------
     
     for node in graph.getNodes():
-        print(node.getNodeEdges())
-    while q and visited[0]!=x:
-        if q[0] in visited:
+        print(node.getNodeCostedEdges())
+    expandedCost=0
+    while q and visited[-1]!=x:
+        if q[0][0] in visited:
             q.pop(0)
-            print(q)
+            print('visited popped -->',q)
             
         else:
-            opened=q[0]
+            opened=q[0][0]
             print('opened-->',opened)
             
             openedNode=Node()
             if opened in graph.getNodesNames():
                 openedNode=graph.searchNode(opened)
-                
-                for node in openedNode.getNodeEdges():
+                expandedCost=q[0][1]
+                for node in openedNode.getNodeCostedEdges():
                     if node[0] not in visited:
-                        q.append(node[0])
+                        q.append([node[0],node[1]+expandedCost])
                 
                 
                 
@@ -182,7 +175,9 @@ def UCS(graph,x):
                 visited.append(opened)
                 print('visited --> ',visited)
                 q.pop(0)
-                #Arrange queue based on costs
+            
+            
+            #Arrange queue based on costs
             q=ascendentCost(q)    
             print(q)
             
