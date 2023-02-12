@@ -3,6 +3,8 @@
 Created on Wed Feb  1 16:21:01 2023
 
 @author: ammar
+
+
 """
 import itertools
 from collections import defaultdict
@@ -88,20 +90,22 @@ class Graph:
             s.setNodeEdge(d,cost)
         else:
             print(d.getNode()[0] , ' is connected to ',s.getNode()[0])
-        
+        '''
         if s.getNode()[0] not in d.getNodeEdges():
             d.setNodeEdge(s,cost)
         else:
             print(s.getNode()[0] , ' is connected to ',d.getNode()[0])
-        
+        '''
     
     #function to insert adjacencies of the whole graph :
     def insertAdjs(self):
+        
         adjNode=Node()
         isCosted=bool()
         costed=input('Are Graph edges costed ? y/n > ')
+       
         isCosted= True if costed =='y' else False
-        
+        #for node in self.graph:
         for node in self.graph:
             print('Now you insert the node ',node.getNode()[0], ' adjacencies: >> >>')
             adjacent=input('Enter adjacencies  > ')

@@ -3,6 +3,8 @@
 Created on Wed Feb  1 15:20:59 2023
 
 @author: ammar
+
+reference:https://medium.com/nerd-for-tech/ai-search-algorithms-with-examples-54772c6d973a
 """
 from collections import defaultdict
 from graph import Node,Graph
@@ -12,6 +14,7 @@ from graph import Node,Graph
 
 
 def BFS(graph,x):
+    print('BFS -------------------------------')
     q=['S']
     visited=['.']
     opened=''
@@ -50,6 +53,7 @@ def BFS(graph,x):
 # DFS search value x in graph
 
 def DFS(graph,x):
+    print('DFS --------------------------------------')
     stack=['S']
     visited=['.']
     opened=''
@@ -57,6 +61,7 @@ def DFS(graph,x):
     while stack and visited[-1]!=x :
         if stack[-1] in visited:
             stack.pop(-1)
+            print('visited -->',visited)
             print('STACK --> ',stack)
             
         else:
@@ -74,7 +79,7 @@ def DFS(graph,x):
                 
                 visited.append(opened)    
                 
-               
+            print('visited---->',visited)   
             print('STACK ----> ',stack)
             
     
@@ -87,6 +92,7 @@ def DFS(graph,x):
 
 # Greedy search for element x in graph
 def Greedy(graph,x):
+    print('GREEDY -------------------------------')
     stack=['S']
     visited=['.']
     opened=''
@@ -99,7 +105,7 @@ def Greedy(graph,x):
         for node in li:
             heu=graph.searchNode(node).getNode()[1]
             nodesHueList.append([node,heu])
-        nodesHueList.sort(key=lambda x: x[1])
+        nodesHueList.sort(key=lambda x: x[1] ,reverse=True)
         for node in nodesHueList:
             returnlist.append(node[0])
         return returnlist
@@ -136,6 +142,71 @@ def Greedy(graph,x):
 
 #Uniform cost Algorithm | Dijkstra’s single-source-shortest-path algorithm: 
 def UCS(graph,x):
+    print('UCS -------------------------------------')
+    q=[['S',0]]
+    visited=['.']
+    opened=''
+    openedNode=Node()
+    sortedCostList=list()
+    
+    #function to arrange queue nodes based on cost------------------------------------
+    def ascendentCost(nodesCostList):
+        nodesCostList.sort(key=lambda x: x[1] , reverse=False)
+        return nodesCostList
+    
+    #-------------------------------------
+    #cost of expanded node to be accumulated
+    expandedCost=0
+    while q and visited[-1]!=x:
+        
+       
+        #opened node name 
+        opened=q[0][0]
+        #print('opened-->',opened)
+        
+        openedNode=Node()
+        if opened in graph.getNodesNames():
+            openedNode=graph.searchNode(opened)
+            expandedCost=q[0][1]
+            for node in openedNode.getNodeCostedEdges():
+                #even if expanded node in visited append the visiteed 
+                q.append([node[0],node[1]+expandedCost])
+            
+            
+            
+            print('extended---',openedNode.getNodeEdges())
+            visited.append(opened)
+            print('visited --> ',visited)
+            q.pop(0)
+        
+        
+        #Arrange queue based on costs
+        q=ascendentCost(q)    
+        print('Periority Queue -->',q)     
+            
+    print('\n')            
+    print(int(visited[-1]==x)*('congrats it worked\n'))
+    print(int(visited[-1]!=x)*('OooPS Missed it !! !! \n'))
+    print('checked nodes --->',visited)
+    opt_path=list()
+    reversedVisited=visited
+    reversedVisited.pop(0)
+    reversedVisited.reverse()
+    temp=Node()
+    
+    for node in reversedVisited:
+        temp=graph.searchNode(node)
+        if len(opt_path)==0:
+            opt_path.append(node)
+        elif opt_path[-1] in temp.getNodeEdges():
+            opt_path.append(node)
+        
+    
+    print('opt. path--->',opt_path)
+      
+        
+#A* search Algorithm         
+def A_star(graph,x):
     q=[['S',0]]
     visited=['.']
     opened=''
@@ -144,13 +215,23 @@ def UCS(graph,x):
     
     #------------------------------------
     def ascendentCost(nodesCostList):
-        nodesCostList.sort(key=lambda x: x[1])
+        nodesCostList.sort(key=lambda x: x[2])
         return nodesCostList
-    
+    #........
+    def replaceToMinFun(newNode,q):
+        if any(newNode in sublist for sublist in q):
+            for node in q:
+                if newNode[0]==node[0]:
+                    if newNode[2]<node[2]:
+                        node=newNode
+        else:
+            q.append(newNode)
+            
+        
+                
     #-------------------------------------
     
-    for node in graph.getNodes():
-        print(node.getNodeCostedEdges())
+    
     expandedCost=0
     while q and visited[-1]!=x:
         if q[0][0] in visited:
@@ -164,14 +245,15 @@ def UCS(graph,x):
             openedNode=Node()
             if opened in graph.getNodesNames():
                 openedNode=graph.searchNode(opened)
-                expandedCost=q[0][1]
+                expandedCost=q[0][1] 
                 for node in openedNode.getNodeCostedEdges():
                     if node[0] not in visited:
-                        q.append([node[0],node[1]+expandedCost])
-                
-                
-                
-                print('extended---',openedNode.getNodeEdges())
+                        heu=graph.searchNode(node[0]).getNode()[1]
+                        newToQ=[node[0],node[1]+expandedCost,heu+node[1]+expandedCost]
+                        replaceToMinFun(newToQ, q)
+                        
+
+                #print('extended---',openedNode.getNodeEdges())
                 visited.append(opened)
                 print('visited --> ',visited)
                 q.pop(0)
@@ -179,18 +261,31 @@ def UCS(graph,x):
             
             #Arrange queue based on costs
             q=ascendentCost(q)    
-            print(q)
+            print('---> Q: ',q)
             
     print('\n')            
     print(int(visited[-1]==x)*('congrats it worked\n'))
     print(int(visited[-1]!=x)*('OooPS Missed it !! !! \n'))
     print(visited)
-             
-#A* search Algorithm         
-def A_star(graph,x):
-    pass
+    #----
+    opt_path=list()
+    reversedVisited=visited
+    reversedVisited.pop(0)
+    reversedVisited.reverse()
+    temp=Node()
+    
+    for node in reversedVisited:
+        temp=graph.searchNode(node)
+        if len(opt_path)==0:
+            opt_path.append(node)
+        elif opt_path[-1] in temp.getNodeEdges():
+            opt_path.append(node)
+        
+    opt_path.reverse()
+    print('opt. path--->',opt_path)
 
-#Hill climbing search Algorithm
+                
+#Hill climbing search Algorithm (or Gradient Descent):
 def hill_climbing(graph,x):
     pass
         
@@ -201,7 +296,11 @@ def hill_climbing(graph,x):
 #-----------------------------------------------------------------------
       
 #-create undir-graph----------------------------------------------------------------      
-nodes=[['S',1],['A',5],['B',7],['C',6],['D',5],['E',3],['F',2],['G',0]]
+
+nodes=[['S',5],['A',16],['B',10],['C',12],
+       ['D',14],['E',9],['F',10],['G',8],
+       ['H',10],['I',8],['J',6],['K',5],['L',4],['M',0]
+       ]
 #nodesNames=['S','A','B','C','D','E','F','G']
 nodeslist=[] #graph input
 for node in nodes:
@@ -221,7 +320,8 @@ for node in graph.getNodes():
 '''
 #-Excute search methods:
 
-#BFS(graph,'G')
-#DFS(graph,'G')
-#Greedy(graph,'G')
-UCS(graph, 'G')
+#BFS(graph,'M')
+#DFS(graph,'M')
+#Greedy(graph,'M')
+#UCS(graph, 'M')
+#A_star(graph, 'M')
