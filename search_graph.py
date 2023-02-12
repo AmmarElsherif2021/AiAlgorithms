@@ -147,8 +147,7 @@ def UCS(graph,x):
     visited=['.']
     opened=''
     openedNode=Node()
-    sortedCostList=list()
-    
+
     #function to arrange queue nodes based on cost------------------------------------
     def ascendentCost(nodesCostList):
         nodesCostList.sort(key=lambda x: x[1] , reverse=False)
@@ -211,7 +210,7 @@ def A_star(graph,x):
     visited=['.']
     opened=''
     openedNode=Node()
-    sortedCostList=list()
+    
     
     #------------------------------------
     def ascendentCost(nodesCostList):
@@ -287,7 +286,58 @@ def A_star(graph,x):
                 
 #Hill climbing search Algorithm (or Gradient Descent):
 def hill_climbing(graph,x):
-    pass
+    print('Hill climbing -------------------------------')
+    stack=['S']
+    visited=['.']
+    opened=''
+   
+    # A function to sort list of nodes names based on their heu
+    def ascendentHue(li):
+        nodesHueList=list()
+        returnlist=list()
+        heu=int()
+        for node in li:
+            heu=graph.searchNode(node).getNode()[1]
+            nodesHueList.append([node,heu])
+        nodesHueList.sort(key=lambda x: x[1] ,reverse=False)
+        for node in nodesHueList:
+            returnlist.append(node[0])
+        return returnlist
+
+    
+    while stack  :
+        if stack[-1] in visited:
+            stack.pop(-1)
+            print('STACK --> ',stack)
+            
+        else:
+            opened=stack[-1]
+            openedNode=Node()
+            stack.pop(-1)
+            
+            if opened in graph.getNodesNames():
+                openedNode=graph.searchNode(opened)
+                adjlist=openedNode.getNodeEdges()
+                huelist=ascendentHue(adjlist)
+                # li.sort(reverse=True)
+                temp=Node()
+                for node in huelist:
+                    temp=graph.searchNode(node)
+                    #ONLY TARGETING LOCAL MAXIMUM HEURISTIC !
+                    if node not in visited and temp.getNode()[1]>openedNode.getNode()[1]:
+                        stack.append(node)
+                        break
+                visited.append(opened)    
+                print('VISITED ==>',visited)
+               
+            print('STACK ----> ',stack)
+            
+    
+    print('\n')            
+    print(int(visited[-1]==x)*('congrats it worked\n'))
+    print(int(visited[-1]!=x)*('OooPS Missed it !! \n'))
+    print('visited --->> ',visited)
+    
         
 
 
@@ -297,11 +347,13 @@ def hill_climbing(graph,x):
       
 #-create undir-graph----------------------------------------------------------------      
 
+#This is a nested list of nodes name required for Graph and their heurestics
 nodes=[['S',5],['A',16],['B',10],['C',12],
        ['D',14],['E',9],['F',10],['G',8],
        ['H',10],['I',8],['J',6],['K',5],['L',4],['M',0]
        ]
-#nodesNames=['S','A','B','C','D','E','F','G']
+
+
 nodeslist=[] #graph input
 for node in nodes:
     name=node[0]
@@ -325,3 +377,4 @@ for node in graph.getNodes():
 #Greedy(graph,'M')
 #UCS(graph, 'M')
 #A_star(graph, 'M')
+hill_climbing(graph, 'M')
