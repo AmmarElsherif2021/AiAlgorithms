@@ -345,36 +345,40 @@ def hill_climbing(graph,x):
 
 #-----------------------------------------------------------------------
       
-#-create undir-graph----------------------------------------------------------------      
-
-#This is a nested list of nodes name required for Graph and their heurestics
-nodes=[['S',5],['A',16],['B',10],['C',12],
-       ['D',14],['E',9],['F',10],['G',8],
-       ['H',10],['I',8],['J',6],['K',5],['L',4],['M',0]
-       ]
 
 
-nodeslist=[] #graph input
-for node in nodes:
-    name=node[0]
-    hue=node[1]
-    newNode=Node(name,hue)
-    nodeslist.append(node)  
-print(nodeslist)    
+if __name__ == '__main__':
+    
+    #-create undir-graph----------------------------------------------------------------      
 
-graph=Graph(nodeslist)
-graph.insertAdjs()
+    #This is a nested list of nodes name required for Graph and their heurestics
+    nodes=[['S',5],['A',16],['B',10],['C',12],
+           ['D',14],['E',9],['F',10],['G',8],
+           ['H',10],['I',8],['J',6],['K',5],['L',4],['M',0]
+           ]
 
-# test graph edges existance:
-'''
-for node in graph.getNodes():
-    print(node.getNode(),'---->',node.getNodeCostedEdges())
-'''
-#-Excute search methods:
 
-#BFS(graph,'M')
-#DFS(graph,'M')
-#Greedy(graph,'M')
-#UCS(graph, 'M')
-#A_star(graph, 'M')
-hill_climbing(graph, 'M')
+    nodeslist=[] #graph input
+    for node in nodes:
+        name=node[0]
+        hue=node[1]
+        newNode=Node(name,hue)
+        nodeslist.append(node)  
+    print(nodeslist)    
+
+    graph=Graph(nodeslist)
+    graph.insertAdjs()
+
+    # test graph edges existance:
+    '''
+    for node in graph.getNodes():
+        print(node.getNode(),'---->',node.getNodeCostedEdges())
+    '''
+    #-Excute search methods:
+    BFS(graph,'M')
+    DFS(graph,'M')
+    Greedy(graph,'M')
+    UCS(graph, 'M')
+    A_star(graph, 'M')
+    hill_climbing(graph, 'M')
+    
