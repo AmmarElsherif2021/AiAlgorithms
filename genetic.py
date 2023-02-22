@@ -17,10 +17,10 @@ class knapsackItem:
         return [self.weight,self.value]
 '''
 #list of items
-weights=[1,2,4,2,5]
-values=[5,3,5,3,2]
+weights=[1,2,4,2,5,3,4,1,7,3,6]
+values=[5,3,5,3,2,5,3,2,1,6,9]
 population=100
-w_limit=10
+w_limit=15
 items=[]
 gen_iteration=250
 '''
@@ -135,13 +135,17 @@ def geneticFun(weights,values,population,w_limit,gen_iteration):
         print(pop)
         gen_counter+=1
     
-    print('weights selected >> ',interpretElected(pop[0]))
+    print('weights selected >> ',interpretElected(pop[0])[0])
+    print('in total weight >>',sum(interpretElected(pop[0])[0]))
+    print('values selected >> ',interpretElected(pop[0])[1])
+    print('in total value >>',sum(interpretElected(pop[0])[1]))
     return pop
  
 # interpret the individual into a meaning decision 
 def interpretElected(c):
     output=[a*b for a,b in zip(c,weights)]
-    return output
+    output1=[a*b for a,b in zip(c,values)]
+    return [output,output1]
 if __name__=='__main__':
     #test
    
