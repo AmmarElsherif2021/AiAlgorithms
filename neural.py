@@ -6,3 +6,11 @@ Srcs:
 
 '''
 #use numpy to represent and do operations on vectors as arrays
+class Node:
+    def __init__(self,activation,weight):
+        activation=self.activation
+        weight=self.weight
+        
+def activate(node):
+    pass
+
